@@ -1,0 +1,380 @@
+<html>
+<head>
+	<title>PONG</title>
+
+	<a href="front.html"><img src ="halfCourt.png" id = "linktoGame" src = "pong.html" alt = "PONG LOGO"/></a>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+	<div id = "whitePaddle"></div>
+	<div id = "blancoPaddle"></div>
+
+	<div id = "ball"></div>
+
+
+	<div id = "whiteScore"></div>
+	<div id = "blancoScore"></div>
+
+	<style>
+
+		body{
+			background: black;
+		}
+
+		@font-face { font-family: Broadway; src: url('Broadway_Regular.ttf'); }
+
+		#whitePaddle{
+			background: white;
+			height: 200px;
+			width: 15px;
+			position: absolute;
+			left: 0%;
+			
+		}
+
+		#blancoPaddle{
+			background: white;
+			height: 200px;
+			width: 15px;
+			position: absolute;
+			right: 0%;	
+			
+		}
+
+		#ball{
+			border-radius: 50%;
+			background: white;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 40px;
+			height: 40px;
+		}
+
+		#whiteScore{
+			position: absolute;
+			background: transparent;
+			font-size: 200px;
+			left: 25%;
+			font-family: Broadway;
+			color: white;  
+			
+		}
+
+		#blancoScore{
+			position: absolute;
+			background: transparent;
+			font-size: 200px;
+			left: 65%;
+			font-family: Broadway;
+			color: white;  
+			
+		}
+
+		#linktoGame{
+			position: absolute;
+			left:35%;
+			top: 30%;
+		}
+
+	</style>
+
+
+    <script>
+
+    //audio stuff//audio stuff//audio stuff//audio stuff//audio stuff//audio stuff//audio stuff
+    //audio stuff//audio stuff//audio stuff//audio stuff//audio stuff//audio stuff//audio stuff
+
+    var gameplay = new Audio ("gameplay.mp3");
+    gameplay.play();
+
+    //paddle stuff//paddle stuff//paddle stuff//paddle stuff//paddle stuff//paddle stuff
+    //paddle stuff//paddle stuff//paddle stuff//paddle stuff//paddle stuff//paddle stuff
+    //paddle stuff//paddle stuff//paddle stuff//paddle stuff//paddle stuff//paddle stuff
+
+    	var pageWidth = $(window).width();
+    	var pageHeight = $(window).height();
+
+    	var paddleHeight = 200;
+    	var paddleWidth = 15;
+
+    	$("#whitePaddle").offset({top: pageHeight/2 - paddleHeight/2});
+    	$("#blancoPaddle").offset({top: pageHeight/2 - paddleHeight/2});
+
+    	var whitePaddleXPos;
+    	var whitePaddleYPos = pageHeight/2 - paddleHeight/2;
+
+    	var blancoPaddleXPos;
+    	var blancoPaddleYPos = pageHeight/2 - paddleHeight/2;
+
+    	var paddleJump = 40;
+
+    	$("#whitePaddle").offset({top:whitePaddleYPos});
+    	$("#blancoPaddle").offset({top:blancoPaddleYPos});
+
+
+    	function paddleMovement(event){
+    		if(event.keyCode == 81){
+    			if(whitePaddleYPos >= 0){
+    				whitePaddleYPos-=paddleJump;
+    				$("#whitePaddle").offset({top:whitePaddleYPos});
+    			}
+    		} else{
+    			if(event.keyCode == 65){
+    				if(whitePaddleYPos + paddleHeight <= pageHeight){
+	    				whitePaddleYPos+=paddleJump;
+	    				$("#whitePaddle").offset({top:whitePaddleYPos});
+	    			}
+	    		} else {
+	    			if(event.keyCode == 80){
+	    				if(blancoPaddleYPos >= 0){
+		    				blancoPaddleYPos-=paddleJump;
+		    				$("#blancoPaddle").offset({top:blancoPaddleYPos});
+		    			}
+	    			} else {
+	    				if(event.keyCode == 76){
+	    					if(blancoPaddleYPos + paddleHeight <= pageHeight){
+		    					blancoPaddleYPos+=paddleJump;
+		    					$("#blancoPaddle").offset({top:blancoPaddleYPos});
+		    				}
+		    			}
+		    		}
+		    	}
+		    }
+		}
+
+    	$(window).keydown(paddleMovement);
+
+    	//ballstuff//ballstuff//ballstuff//ballstuff//ballstuff//ballstuff
+    	//ballstuff//ballstuff//ballstuff//ballstuff//ballstuff//ballstuff
+    	//ballstuff//ballstuff//ballstuff//ballstuff//ballstuff//ballstuff
+
+    	var ballX = pageWidth/2;
+    	var ballY = pageHeight/2;
+
+    	var ballD = 40;
+
+
+    	var moveRight = true;
+    	var moveDown = false;
+
+    	var whiteScore = 0;
+    	var blancoScore = 0;
+
+    	function ballFly(){
+    		if(atBottomWall()){
+    			moveDown = false;
+    		} else{
+    			if(atTopwall()){
+    				moveDown = true;
+    			}
+    		}
+
+			if(whiteHit()){
+				moveRight = true;
+			} else{
+				if(blancoHit()){
+					moveRight = false;
+				}
+			}
+
+			if(moveRight){
+				if(moveDown){
+					direction(315)
+				} else{
+					direction(45);
+				}
+			} else{
+				if(moveDown){
+					direction(225);
+				} else{
+					direction(135);
+				}
+			}
+
+			if(pastWhite()){
+				blancoScore++;
+				ballX = pageWidth/2;
+				ballY = pageHeight/2;
+				$("#ball").offset({top:ballY , left: ballX});
+
+				
+				$("#blancoScore").text(blancoScore);
+			} else{
+				if(pastBlanco()){
+					whiteScore++;
+					ballX = pageWidth/2;
+					ballY = pageHeight/2;
+					$("#ball").offset({top:ballY , left: ballX});
+					$("#whiteScore").text(whiteScore);
+					
+				}
+			}
+
+		
+			
+			if(whiteScore >= 10|| blancoScore >= 10){
+				location.replace("endingPage.html");
+			}
+
+		
+			
+
+		}
+
+
+			
+		
+
+
+	
+		
+
+
+				
+
+
+    	setInterval(ballFly, 25);
+
+
+
+
+    	function direction(degrees){
+		    var ballJump = 15;
+		    switch (degrees){
+		    case 0:  
+		    	ballX+=ballJump;
+		        $("#ball").offset({left:ballX});
+		        break;
+		    case 45: 
+		    	ballX+=ballJump;
+		        ballY-=ballJump;
+		        $("#ball").offset({top:ballY,left:ballX});
+		        break;
+		    case 90:
+		    	ballY-=ballJump;
+		        $("#ball").offset({top:ballY});
+		        break;
+		    case 135:  
+		    	ballX-=ballJump;
+		        ballY-=ballJump;
+		        $("#ball").offset({top:ballY, left:ballX});
+		        break;
+		    case 180:  
+		    	ballX-=ballJump;
+		        $("#ball").offset({left:ballX});
+		        break;
+		    case 225:
+		    	ballX-=ballJump;
+		        ballY+=ballJump;
+		        $("#ball").offset({top:ballY , left:ballX});
+		        break;
+		    case 270:
+		    	ballY+=ballJump;
+		        $("#ball").offset({top:ballY});
+		        break;
+		    case 315:
+		    	ballX+=ballJump;
+		        ballY+=ballJump;
+		        $("#ball").offset({top:ballY , left:ballX});
+		        break;
+		    }
+		}
+
+		function atTopwall(){
+			if(ballY <= 0){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function atBottomWall(){
+			if(ballY + ballD >= pageHeight){
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+		function whiteX(){
+			if(ballX <= paddleWidth){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function blancoX(){
+			if(ballX + ballD  >= (pageWidth - paddleWidth)){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function whiteY(){
+			if(ballY >= whitePaddleYPos && ballY <= whitePaddleYPos+paddleHeight){
+				return true;
+			} else{
+				return false;
+			}
+		}
+
+		function blancoY(){
+			if(ballY >= blancoPaddleYPos && ballY <= blancoPaddleYPos+paddleHeight){
+				return true;
+			} else{
+				return false;
+			}
+		}
+
+		function whiteHit(){
+			if(whiteX() && whiteY()){
+				return true;
+			} else{
+				return false;
+			}
+		}
+
+		function blancoHit(){
+			if(blancoX() && blancoY()){
+				return true;
+			} else{
+				return false;
+			}
+		}
+
+		function pastWhite(){
+			if(ballX <= 0){
+				return true
+			} else{
+				return false;
+			}
+		}
+		function pastBlanco(){
+			if(ballX + ballD > pageWidth){
+				return true
+			} else{
+				return false;
+			}
+		}
+
+
+			
+
+		
+			
+
+
+
+
+
+    </script>
+
+
+
+</body>
+</html>

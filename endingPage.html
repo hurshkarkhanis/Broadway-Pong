@@ -1,0 +1,101 @@
+<html>
+<head>
+	<title>Congratulations</title>
+</head>
+<body>
+
+	<a href = "front.html" id = "congrats">Congratulations! Click here to play again.</a>
+
+	<br>
+	<br>
+	<br>
+
+	<marquee scrollamount="10" direction="up" id = "creds">
+
+	Inspiration: Christopher Coelho
+	<br>
+	<br>
+	Build: Hursh Karkhanis
+	<br>
+	<br>
+	Debugging and Logic: Christopher Coelho, Hursh Karkhanis, Tim Kay, Scott Lee
+	<br>
+	<br>
+	Logo and Graphics: Sameer Chowdhury and Hursh Karkhanis
+	<br>
+	<br>
+	Text Editor: Sublime Text 2
+	<br>
+	<br>
+	Special Thanks To: Chetan Karkhanis
+	<br>
+	<br>
+	<br>
+	<br>
+	<center>Soundtrack</center>
+	<br>
+	<br>
+	<center><b>Ping Pong (Hardwell Remix)<b></center>
+	<center>Armin van Buuren</center>
+	<center>Armada Music</center>
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+
+	Copyright Hursh Karkhanis, 2015
+
+
+
+	</marquee>
+	
+
+	<style>
+
+		body{
+			background :black;
+		}
+
+		@font-face { font-family: Broadway; src: url('Broadway_Regular.ttf'); }
+
+		#congrats{
+			
+			font-family: Broadway;
+			font-size: 50px;
+			color: white;  
+		}
+
+		#creds{
+			font-family: Broadway;
+			font-size: 25px;
+			color: white;
+		}
+
+	</style>
+
+	<script>
+
+		var creditRoll= new Audio("creditRoll.mp3");
+		creditRoll.play()
+
+		var time = 0;
+
+		function automatic(){
+			time++;
+			if(time >= 28){
+				location.replace("front.html")
+			}
+		}
+
+		setInterval(automatic, 1000);
+
+
+
+
+
+	</script>
+
+</body>
+</html>
